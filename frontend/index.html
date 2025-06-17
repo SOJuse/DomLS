@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Дом ЛС - премиальный ремонт квартир под ключ в Москве. Черновой, косметический, капитальный и дизайнерский ремонт. Гарантия качества." />
+    <meta name="keywords" content="ремонт квартир, ремонт под ключ, дизайнерский ремонт, капитальный ремонт, Москва" />
+    <title>Дом ЛС - Премиальный ремонт квартир под ключ</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/ЛОГО.png" as="image" />
+    <link rel="preload" href="/Vector 1 (2).png" as="image" />
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//images.pexels.com" />
+    
+    <!-- Critical CSS inlined for faster loading -->
+    <style>
+      /* Critical above-the-fold styles */
+      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+      .loading { display: flex; align-items: center; justify-content: center; height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="loading">
+        <div style="text-align: center;">
+          <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e3a8a; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p style="color: #666;">Загрузка...</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </body>
+</html>
