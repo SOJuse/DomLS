@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -19,17 +19,6 @@ const Footer: React.FC = () => {
             <p className="text-gray-400">
               Премиальный ремонт квартир под ключ. Создаем пространства мечты с безупречным качеством.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Youtube className="h-5 w-5" />
-              </a>
-            </div>
           </div>
 
           <div>
@@ -59,15 +48,11 @@ const Footer: React.FC = () => {
             <div className="space-y-3 text-gray-400">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+7 (900) 123-45-67</span>
+                <span>+7 926 185 65 08</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
                 <span>info@dom-ls.ru</span>
-              </div>
-              <div className="flex items-start space-x-2">
-                <MapPin className="h-4 w-4 mt-1" />
-                <span>г. Москва, ул. Строительная, д. 15</span>
               </div>
             </div>
           </div>

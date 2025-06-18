@@ -1,0 +1,15 @@
+version: "2"
+authtoken: # Здесь нужно будет добавить ваш токен
+tunnels:
+  frontend:
+    addr: 3000
+    proto: http
+    subdomain: domls-frontend # если у вас есть платный аккаунт
+  admin:
+    addr: 3002
+    proto: http
+    subdomain: domls-admin # если у вас есть платный аккаунт
+  backend:
+    addr: 3001
+    proto: http
+    subdomain: domls-api # если у вас есть платный аккаунт 

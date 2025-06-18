@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: domls_postgres
+    environment:
+      POSTGRES_DB: domls_db
+      POSTGRES_USER: domls_user
+      POSTGRES_PASSWORD: domls_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - domls_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U domls_user -d domls_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: domls_backend
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://domls_user:domls_password@postgres:5432/domls_db?sslmode=disable
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - domls_network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: domls_frontend
+    environment:
+      VITE_API_URL: http://localhost:3001
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - domls_network
+    restart: unless-stopped
+
+  # Admin Panel (Nginx + React Admin)
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: domls_admin
+    environment:
+      REACT_APP_API_URL: http://localhost:3001
+    ports:
+      - "3002:80"
+    depends_on:
+      - backend
+    networks:
+      - domls_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  domls_network:
+    driver: bridge 

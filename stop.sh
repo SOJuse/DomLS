@@ -1,12 +1,28 @@
 #!/bin/bash
 
-# Kill all processes
-pkill -f vite
-pkill -f serve
-pkill -f ngrok
-pkill -f ts-node-dev
+echo "🛑 Остановка проекта DomLS..."
 
-# Remove PID file if it exists
-rm -f .pids
+# Проверяем наличие Docker Compose
+if ! command -v docker-compose &> /dev/null; then
+    echo "❌ Docker Compose не установлен."
+    exit 1
+fi
 
-echo "All services stopped!" 
+# Останавливаем контейнеры
+echo "⏹️ Остановка контейнеров..."
+docker-compose down
+
+# Удаляем тома (опционально)
+read -p "Удалить данные базы данных? (y/N): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "🗑️ Удаление данных..."
+    docker-compose down -v
+fi
+
+echo "✅ Проект остановлен!"
+echo ""
+echo "📋 Полезные команды:"
+echo "   • Запуск: ./start.sh"
+echo "   • Просмотр логов: docker-compose logs"
+echo "   • Статус: docker-compose ps" 
