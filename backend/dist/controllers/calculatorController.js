@@ -16,7 +16,7 @@ class CalculatorController {
                     errors: validation.errors
                 });
             }
-            const { repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email } = req.body;
+            const { repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email, material, deadline, stage } = req.body;
             // Получаем IP адрес и User Agent
             const ip_address = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
             const user_agent = req.headers['user-agent'];
@@ -30,7 +30,10 @@ class CalculatorController {
                 customer_phone,
                 customer_email,
                 ip_address,
-                user_agent
+                user_agent,
+                material,
+                deadline,
+                stage
             });
             res.status(201).json({
                 success: true,

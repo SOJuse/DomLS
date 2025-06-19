@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS calculator_requests (
     ip_address INET,
     user_agent TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    material VARCHAR(32),
+    deadline VARCHAR(32),
+    stage VARCHAR(32)
 );
 
 -- Создание таблицы для контактов

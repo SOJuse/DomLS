@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Portfolio: React.FC = () => {
   const projects = [
@@ -53,6 +54,8 @@ const Portfolio: React.FC = () => {
     }
   ];
 
+  const [sliderValue, setSliderValue] = useState(50);
+
   return (
     <section id="portfolio" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,15 +68,50 @@ const Portfolio: React.FC = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <div key={project.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+          {projects.map((project, idx) => (
+            <motion.div
+              key={project.id}
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+            >
               <div className="relative overflow-hidden">
-                <img 
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
+                {idx === 0 ? (
+                  <div className="relative w-full h-64">
+                    <img
+                      src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800"
+                      alt="До ремонта"
+                      className="w-full h-64 object-cover absolute top-0 left-0"
+                      style={{ zIndex: 1 }}
+                    />
+                    <img
+                      src="https://images.pexels.com/photos/1571467/pexels-photo-1571467.jpeg?auto=compress&cs=tinysrgb&w=800"
+                      alt="После ремонта"
+                      className="w-full h-64 object-cover absolute top-0 left-0"
+                      style={{ clipPath: `inset(0 ${100 - sliderValue}% 0 0)`, zIndex: 2, transition: 'clip-path 0.3s' }}
+                    />
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={sliderValue}
+                      onChange={e => setSliderValue(Number(e.target.value))}
+                      className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 z-10"
+                      style={{ zIndex: 3 }}
+                    />
+                    <div className="absolute top-2 left-2 bg-[#1e3a8a] text-white px-3 py-1 rounded-full text-sm font-medium z-20">До</div>
+                    <div className="absolute top-2 right-2 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium z-20">После</div>
+                  </div>
+                ) : (
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                )}
                 <div className="absolute top-4 left-4 bg-[#1e3a8a] text-white px-3 py-1 rounded-full text-sm font-medium">
                   {project.area}
                 </div>
@@ -86,7 +124,7 @@ const Portfolio: React.FC = () => {
                 <p className="text-[#1e3a8a] font-medium mb-2">{project.type}</p>
                 <p className="text-gray-600">{project.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

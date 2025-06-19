@@ -18,7 +18,10 @@ const calculatorRequestSchema = Joi.object({
   calculated_price: Joi.number().positive().required(),
   customer_name: Joi.string().max(100).optional(),
   customer_phone: Joi.string().max(20).optional(),
-  customer_email: Joi.string().email().optional()
+  customer_email: Joi.string().email().optional(),
+  material: Joi.string().max(32).optional(),
+  deadline: Joi.string().max(32).optional(),
+  stage: Joi.string().max(32).optional()
 });
 
 // Функция валидации заявки калькулятора

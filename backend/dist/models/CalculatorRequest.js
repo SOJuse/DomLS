@@ -5,11 +5,11 @@ const database_1 = require("../config/database");
 class CalculatorRequestModel {
     // Создание новой заявки
     static async create(data) {
-        const { repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent } = data;
+        const { repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent, material, deadline, stage } = data;
         const result = await (0, database_1.query)(`INSERT INTO calculator_requests 
-       (repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       RETURNING *`, [repair_type, area, JSON.stringify(extras), calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent]);
+       (repair_type, area, extras, calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent, material, deadline, stage)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+       RETURNING *`, [repair_type, area, JSON.stringify(extras), calculated_price, customer_name, customer_phone, customer_email, ip_address, user_agent, material, deadline, stage]);
         return result.rows[0];
     }
     // Получение всех заявок с пагинацией

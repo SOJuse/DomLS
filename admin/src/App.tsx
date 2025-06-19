@@ -49,6 +49,9 @@ interface CalculatorRequest {
   customer_phone?: string;
   customer_email?: string;
   created_at: string;
+  material?: string;
+  deadline?: string;
+  stage?: string;
 }
 
 interface ContactRequest {
@@ -127,12 +130,12 @@ function App() {
 
       if (requestsRes.ok) {
         const requestsData = await requestsRes.json();
-        setRequests(requestsData.data);
+        setRequests(Array.isArray(requestsData.data) ? requestsData.data : (requestsData.data?.requests || []));
       }
 
       if (contactRequestsRes.ok) {
         const contactRequestsData = await contactRequestsRes.json();
-        setContactRequests(contactRequestsData.data);
+        setContactRequests(Array.isArray(contactRequestsData.data) ? contactRequestsData.data : (contactRequestsData.data?.requests || []));
       }
 
       if (analyticsRes.ok) {
@@ -415,6 +418,9 @@ function App() {
                       <TableCell>Стоимость</TableCell>
                       <TableCell>Клиент</TableCell>
                       <TableCell>Дата</TableCell>
+                      <TableCell>Материал</TableCell>
+                      <TableCell>Сроки</TableCell>
+                      <TableCell>Этапы</TableCell>
                       <TableCell>Действия</TableCell>
                     </TableRow>
                   </TableHead>
@@ -446,6 +452,9 @@ function App() {
                           )}
                         </TableCell>
                         <TableCell>{formatDate(request.created_at)}</TableCell>
+                        <TableCell>{request.material || '-'}</TableCell>
+                        <TableCell>{request.deadline || '-'}</TableCell>
+                        <TableCell>{request.stage || '-'}</TableCell>
                         <TableCell>
                           <IconButton
                             size="small"
@@ -576,6 +585,18 @@ function App() {
                   )}
                 </>
               )}
+              <Grid item xs={6}>
+                <Typography variant="subtitle2">Материал:</Typography>
+                <Typography>{selectedRequest.material || '-'}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle2">Сроки:</Typography>
+                <Typography>{selectedRequest.deadline || '-'}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle2">Этапы работ:</Typography>
+                <Typography>{selectedRequest.stage || '-'}</Typography>
+              </Grid>
             </Grid>
           )}
         </DialogContent>

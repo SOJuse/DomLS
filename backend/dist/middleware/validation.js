@@ -18,7 +18,10 @@ const calculatorRequestSchema = joi_1.default.object({
     calculated_price: joi_1.default.number().positive().required(),
     customer_name: joi_1.default.string().max(100).optional(),
     customer_phone: joi_1.default.string().max(20).optional(),
-    customer_email: joi_1.default.string().email().optional()
+    customer_email: joi_1.default.string().email().optional(),
+    material: joi_1.default.string().max(32).optional(),
+    deadline: joi_1.default.string().max(32).optional(),
+    stage: joi_1.default.string().max(32).optional()
 });
 // Функция валидации заявки калькулятора
 const validateCalculatorRequest = (data) => {
@@ -36,7 +39,7 @@ exports.validateCalculatorRequest = validateCalculatorRequest;
 const contactRequestSchema = joi_1.default.object({
     name: joi_1.default.string().min(2).max(100).required(),
     phone: joi_1.default.string().min(10).max(20).required(),
-    email: joi_1.default.string().email().optional(),
+    email: joi_1.default.string().email().allow('').optional(),
     message: joi_1.default.string().max(1000).optional()
 });
 // Функция валидации контактной формы

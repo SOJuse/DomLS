@@ -25,6 +25,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     docker-compose down --rmi all
 fi
 
+# Обновляем зависимости frontend
+cd frontend && npm install && cd ..
+# Обновляем зависимости admin
+cd admin && npm install && cd ..
+# Обновляем зависимости backend
+cd backend && npm run build && cd ..
+
 # Собираем и запускаем контейнеры
 echo "🔨 Сборка и запуск контейнеров..."
 docker-compose up --build -d

@@ -8,13 +8,14 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
 const morgan_1 = __importDefault(require("morgan"));
-const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = require("./config/database");
 const api_1 = __importDefault(require("./routes/api"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3001;
+// Настройка trust proxy для корректной работы с Docker
+app.set('trust proxy', 1);
 // Настройка безопасности
 app.use((0, helmet_1.default)({
     contentSecurityPolicy: {
@@ -40,16 +41,16 @@ app.use((0, cors_1.default)(corsOptions));
 app.use((0, compression_1.default)());
 // Логирование
 app.use((0, morgan_1.default)('combined'));
-// Ограничение скорости запросов
-const limiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000, // 15 минут
-    max: 100, // максимум 100 запросов с одного IP
-    message: {
-        success: false,
-        message: 'Слишком много запросов с вашего IP, попробуйте позже'
-    }
-});
-app.use('/api/', limiter);
+// Ограничение скорости запросов (временно отключено для отладки)
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 минут
+//   max: 100, // максимум 100 запросов с одного IP
+//   message: {
+//     success: false,
+//     message: 'Слишком много запросов с вашего IP, попробуйте позже'
+//   }
+// });
+// app.use('/api/', limiter);
 // Парсинг JSON
 app.use(express_1.default.json({ limit: '10mb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));

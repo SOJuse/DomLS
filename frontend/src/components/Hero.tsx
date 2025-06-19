@@ -57,10 +57,13 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="bg-[#1e3a8a] text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-800 transition-all duration-300 flex items-center justify-center space-x-2 group shadow-lg hover:shadow-xl"
+                className="relative bg-[#1e3a8a] text-white px-8 py-4 text-base rounded-2xl font-semibold hover:bg-blue-800 transition-all duration-300 flex items-center justify-center gap-2 group shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-200"
               >
-                <span>Получить консультацию</span>
+                <span className="inline-block">Получить консультацию</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20 shadow-lg">
+                  Бесплатно
+                </span>
               </button>
               <button 
                 onClick={() => scrollToSection('portfolio')}

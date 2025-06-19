@@ -7,9 +7,12 @@ class ContactController {
     // Создание новой контактной заявки
     static async createRequest(req, res) {
         try {
+            console.log('Received contact request data:', req.body);
             // Валидация входных данных
             const validation = (0, validation_1.validateContactRequest)(req.body);
+            console.log('Validation result:', validation);
             if (!validation.isValid) {
+                console.log('Validation errors:', validation.errors);
                 return res.status(400).json({
                     success: false,
                     message: 'Ошибка валидации',
@@ -29,6 +32,7 @@ class ContactController {
                 ip_address,
                 user_agent
             });
+            console.log('Contact request created successfully:', request.id);
             res.status(201).json({
                 success: true,
                 message: 'Заявка успешно создана',

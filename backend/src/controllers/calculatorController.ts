@@ -23,7 +23,10 @@ export class CalculatorController {
         calculated_price,
         customer_name,
         customer_phone,
-        customer_email
+        customer_email,
+        material,
+        deadline,
+        stage
       } = req.body;
 
       // Получаем IP адрес и User Agent
@@ -40,7 +43,10 @@ export class CalculatorController {
         customer_phone,
         customer_email,
         ip_address,
-        user_agent
+        user_agent,
+        material,
+        deadline,
+        stage
       });
 
       res.status(201).json({
