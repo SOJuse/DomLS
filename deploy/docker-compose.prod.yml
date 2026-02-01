@@ -4,7 +4,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    platform: linux/amd64
     container_name: domls_postgres
     environment:
       POSTGRES_DB: domls_db
@@ -17,10 +16,10 @@ services:
       - domls_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U domls_user -d domls_db"]
-      interval: 5s
-      timeout: 10s
-      retries: 15
-      start_period: 30s
+      interval: 10s
+      timeout: 15s
+      retries: 30
+      start_period: 60s
     restart: unless-stopped
 
   backend:
@@ -36,7 +35,7 @@ services:
       - "127.0.0.1:3001:3001"
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
     networks:
       - domls_network
     restart: unless-stopped
