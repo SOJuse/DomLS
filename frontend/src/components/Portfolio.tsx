@@ -25,7 +25,7 @@ const Portfolio: React.FC = () => {
   }, [modalProject]);
 
   return (
-    <section id="portfolio" className="py-20 bg-gray-50">
+    <section id="portfolio" className="py-12 sm:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Наши работы</h2>
@@ -34,7 +34,7 @@ const Portfolio: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {projectIds.map((id, idx) => {
             const imgs = getProjectImageUrls(id);
             const meta = projectTitles[id] || { title: `Проект ${id}`, type: 'Ремонт', description: '' };
@@ -43,19 +43,20 @@ const Portfolio: React.FC = () => {
             return (
               <motion.div
                 key={id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
-                initial={{ opacity: 0, y: 40 }}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer min-h-0"
+                initial={{ opacity: 1, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                viewport={{ once: true, amount: 0.01, margin: '0px 0px 120px 0px' }}
+                transition={{ duration: 0.4, delay: Math.min(idx * 0.03, 0.3) }}
                 onClick={() => { setModalProject(id); setModalIndex(0); }}
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden aspect-[4/3] min-h-[200px]">
                   <img
                     src={thumb}
                     alt={meta.title}
-                    className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
