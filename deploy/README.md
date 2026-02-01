@@ -81,6 +81,25 @@ nginx -t && systemctl reload nginx
 
 ## 7. Запуск проекта
 
+### Вариант A: Сборка на своём ПК (рекомендуется для слабого VPS 1GB)
+
+На своём компе (с заполненным .env):
+```bash
+cd DomLS
+chmod +x deploy/build-and-save.sh
+./deploy/build-and-save.sh
+scp domls-images.tar root@ТВОЙ_IP:/root/
+```
+
+На сервере:
+```bash
+cd /root/DomLS
+docker load -i /root/domls-images.tar
+docker-compose -f deploy/docker-compose.prod.yml up -d
+```
+
+### Вариант B: Сборка на сервере
+
 ```bash
 cd /root/DomLS
 docker-compose up -d --build

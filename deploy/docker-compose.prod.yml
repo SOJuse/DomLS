@@ -1,7 +1,7 @@
+# Продакшен — без volume-маунтов кода (всё из образов)
 version: '3.8'
 
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: domls_postgres
@@ -9,8 +9,6 @@ services:
       POSTGRES_DB: domls_db
       POSTGRES_USER: domls_user
       POSTGRES_PASSWORD: domls_password
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -21,62 +19,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
-  # Backend API
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: domls-backend:latest
     container_name: domls_backend
     environment:
       NODE_ENV: production
       PORT: 3001
       DATABASE_URL: postgresql://domls_user:domls_password@postgres:5432/domls_db?sslmode=disable
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3002}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://dom-ls.ru,https://www.dom-ls.ru}
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     networks:
       - domls_network
     restart: unless-stopped
 
-  # Frontend
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        - VITE_API_URL=${VITE_API_URL:-http://localhost:3001}
+    image: domls-frontend:latest
     container_name: domls_frontend
-    environment:
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
     ports:
-      - "3000:80"
+      - "127.0.0.1:3000:80"
     depends_on:
       - backend
     networks:
       - domls_network
     restart: unless-stopped
 
-  # Admin Panel (Nginx + React Admin)
   admin:
-    build:
-      context: ./admin
-      dockerfile: Dockerfile
-      args:
-        - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3001}
-        - NODE_MEMORY=${NODE_MEMORY:-2048}
+    image: domls-admin:latest
     container_name: domls_admin
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3001}
     ports:
-      - "3002:80"
+      - "127.0.0.1:3002:80"
     depends_on:
       - backend
     networks:
@@ -88,4 +66,4 @@ volumes:
 
 networks:
   domls_network:
-    driver: bridge 
+    driver: bridge

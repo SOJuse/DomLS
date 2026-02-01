@@ -17,7 +17,9 @@ ARG REACT_APP_API_URL=http://localhost:3001
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 
-ENV NODE_OPTIONS="--max-old-space-size=512"
+# Память для сборки: на Mac 2048, на слабом сервере --build-arg NODE_MEMORY=512
+ARG NODE_MEMORY=2048
+ENV NODE_OPTIONS="--max-old-space-size=${NODE_MEMORY}"
 # Собираем приложение
 RUN npm run build
 
