@@ -61,12 +61,17 @@ $$ language 'plpgsql';
 -- Создание триггера для автоматического обновления updated_at
 CREATE TRIGGER update_calculator_requests_updated_at 
     BEFORE UPDATE ON calculator_requests 
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
--- Вставка тестового администратора (пароль: admin123)
-INSERT INTO admins (username, email, password_hash, role) 
-VALUES ('admin', 'admin@domls.ru', '$2a$12$Z/Zv7Q5ULXYt/SYqxhCjg.E.eTNysdrJ15JQuB1kJNFiUd06ZoYCW', 'admin')
-ON CONFLICT (username) DO NOTHING;
+-- Вставка администратора по умолчанию (пароль: admin123)
+-- Используем DO для надёжной вставки
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM admins WHERE username = 'admin') THEN
+    INSERT INTO admins (username, email, password_hash, role, is_active) 
+    VALUES ('admin', 'admin@domls.ru', '$2a$12$Z/Zv7Q5ULXYt/SYqxhCjg.E.eTNysdrJ15JQuB1kJNFiUd06ZoYCW', 'admin', true);
+  END IF;
+END $$;
 
 -- Создание представления для аналитики
 CREATE OR REPLACE VIEW analytics_summary AS

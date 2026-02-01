@@ -74,10 +74,12 @@ export class AuthController {
       });
 
     } catch (error) {
-      console.error('Error during login:', error);
+      const err = error as Error;
+      console.error('Error during login:', err.message, err.stack);
       res.status(500).json({
         success: false,
-        message: 'Внутренняя ошибка сервера'
+        message: 'Внутренняя ошибка сервера',
+        ...(process.env.NODE_ENV !== 'production' && { debug: err.message })
       });
     }
   }
