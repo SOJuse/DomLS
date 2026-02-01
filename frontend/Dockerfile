@@ -21,6 +21,9 @@ FROM nginx:alpine AS production
 # Копируем собранное приложение
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Права на чтение проектов (nginx пользователь)
+RUN chmod -R 755 /usr/share/nginx/html/projects 2>/dev/null || true
+
 # Копируем конфигурацию Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 

@@ -118,7 +118,7 @@ const Hero: React.FC = () => {
 
             {/* Плавающая карточка с ценой */}
             <div className="absolute -top-6 -right-6 bg-[#1e3a8a] rounded-2xl p-6 text-white shadow-xl z-20">
-              <div className="text-2xl font-bold">от 5000₽</div>
+              <div className="text-2xl font-bold">от 6000₽</div>
               <div className="text-blue-200">за м²</div>
             </div>
           </div>

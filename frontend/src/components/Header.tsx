@@ -27,7 +27,7 @@ function useActiveSection(sectionIds: string[]) {
 }
 
 const Header: React.FC = () => {
-  const sectionIds = ['about', 'portfolio', 'calculator', 'contact'];
+  const sectionIds = ['about', 'portfolio', 'prices', 'calculator', 'contact'];
   const active = useActiveSection(sectionIds);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -49,6 +49,7 @@ const Header: React.FC = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#about" className={"transition-colors px-2 py-1 rounded " + (active === 'about' ? 'bg-[#1e3a8a] text-white shadow' : 'text-gray-700 hover:text-[#1e3a8a]')}>О нас</a>
             <a href="#portfolio" className={"transition-colors px-2 py-1 rounded " + (active === 'portfolio' ? 'bg-[#1e3a8a] text-white shadow' : 'text-gray-700 hover:text-[#1e3a8a]')}>Портфолио</a>
+            <a href="#prices" className={"transition-colors px-2 py-1 rounded " + (active === 'prices' ? 'bg-[#1e3a8a] text-white shadow' : 'text-gray-700 hover:text-[#1e3a8a]')}>Прайсы</a>
             <a href="#calculator" className={"transition-colors px-2 py-1 rounded " + (active === 'calculator' ? 'bg-[#1e3a8a] text-white shadow' : 'text-gray-700 hover:text-[#1e3a8a]')}>Калькулятор</a>
             <a href="#contact" className={"transition-colors px-2 py-1 rounded " + (active === 'contact' ? 'bg-[#1e3a8a] text-white shadow' : 'text-gray-700 hover:text-[#1e3a8a]')}>Контакты</a>
           </nav>

@@ -1,60 +1,28 @@
-import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getProjectImageUrls, projectTitles, projectIds } from '../projectsData';
 
 const Portfolio: React.FC = () => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Современная квартира',
-      type: 'Дизайнерский ремонт',
-      area: '85 м²',
-      image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Минималистичный дизайн с элементами лофта'
-    },
-    {
-      id: 2,
-      title: 'Семейная квартира',
-      type: 'Капитальный ремонт',
-      area: '120 м²',
-      image: 'https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Уютное пространство для большой семьи'
-    },
-    {
-      id: 3,
-      title: 'Студия в центре',
-      type: 'Косметический ремонт',
-      area: '45 м²',
-      image: 'https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Максимальное использование пространства'
-    },
-    {
-      id: 4,
-      title: 'Элитная квартира',
-      type: 'Дизайнерский ремонт',
-      area: '200 м²',
-      image: 'https://images.pexels.com/photos/1571467/pexels-photo-1571467.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Роскошный интерьер с авторской мебелью'
-    },
-    {
-      id: 5,
-      title: 'Молодежная квартира',
-      type: 'Капитальный ремонт',
-      area: '65 м²',
-      image: 'https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Яркие акценты и современные решения'
-    },
-    {
-      id: 6,
-      title: 'Классическая квартира',
-      type: 'Дизайнерский ремонт',
-      area: '150 м²',
-      image: 'https://images.pexels.com/photos/1571470/pexels-photo-1571470.jpeg?auto=compress&cs=tinysrgb&w=800',
-      description: 'Элегантность в каждой детали'
-    }
-  ];
+  const [modalProject, setModalProject] = useState<string | null>(null);
+  const [modalIndex, setModalIndex] = useState(0);
 
-  const [sliderValue, setSliderValue] = useState(50);
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (!modalProject) return;
+      const imgs = getProjectImageUrls(modalProject);
+      if (e.key === 'Escape') setModalProject(null);
+      if (e.key === 'ArrowLeft') setModalIndex(i => (i > 0 ? i - 1 : imgs.length - 1));
+      if (e.key === 'ArrowRight') setModalIndex(i => (i < imgs.length - 1 ? i + 1 : 0));
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [modalProject]);
+
+  useEffect(() => {
+    if (modalProject) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+  }, [modalProject]);
 
   return (
     <section id="portfolio" className="py-20 bg-gray-50">
@@ -62,77 +30,98 @@ const Portfolio: React.FC = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Наши работы</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Каждый проект уникален и создан с учетом пожеланий клиента. 
-            Посмотрите на результаты нашей работы.
+            Реальные проекты Дом ЛС. Каждый — с учётом пожеланий клиента.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-            >
-              <div className="relative overflow-hidden">
-                {idx === 0 ? (
-                  <div className="relative w-full h-64">
-                    <img
-                      src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800"
-                      alt="До ремонта"
-                      className="w-full h-64 object-cover absolute top-0 left-0"
-                      style={{ zIndex: 1 }}
-                    />
-                    <img
-                      src="https://images.pexels.com/photos/1571467/pexels-photo-1571467.jpeg?auto=compress&cs=tinysrgb&w=800"
-                      alt="После ремонта"
-                      className="w-full h-64 object-cover absolute top-0 left-0"
-                      style={{ clipPath: `inset(0 ${100 - sliderValue}% 0 0)`, zIndex: 2, transition: 'clip-path 0.3s' }}
-                    />
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={sliderValue}
-                      onChange={e => setSliderValue(Number(e.target.value))}
-                      className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4 z-10"
-                      style={{ zIndex: 3 }}
-                    />
-                    <div className="absolute top-2 left-2 bg-[#1e3a8a] text-white px-3 py-1 rounded-full text-sm font-medium z-20">До</div>
-                    <div className="absolute top-2 right-2 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium z-20">После</div>
-                  </div>
-                ) : (
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {projectIds.map((id, idx) => {
+            const imgs = getProjectImageUrls(id);
+            const meta = projectTitles[id] || { title: `Проект ${id}`, type: 'Ремонт', description: '' };
+            const thumb = imgs[0];
+            if (!thumb) return null;
+            return (
+              <motion.div
+                key={id}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                onClick={() => { setModalProject(id); setModalIndex(0); }}
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={thumb}
+                    alt={meta.title}
+                    className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                )}
-                <div className="absolute top-4 left-4 bg-[#1e3a8a] text-white px-3 py-1 rounded-full text-sm font-medium">
-                  {project.area}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-sm font-medium">{imgs.length} фото</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </div>
+                  <div className="absolute top-4 left-4 bg-[#1e3a8a] text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {meta.type}
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">{project.title}</h3>
-                  <ArrowRight className="h-5 w-5 text-[#1e3a8a] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-[#1e3a8a] transition-colors">{meta.title}</h3>
+                  <p className="text-gray-600 mt-1">{meta.description}</p>
                 </div>
-                <p className="text-[#1e3a8a] font-medium mb-2">{project.type}</p>
-                <p className="text-gray-600">{project.description}</p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
-        <div className="text-center mt-12">
-          <button className="bg-[#1e3a8a] text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-300">
-            Посмотреть все проекты
-          </button>
-        </div>
+        <AnimatePresence>
+          {modalProject && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setModalProject(null)}
+            >
+              <button
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                onClick={() => setModalProject(null)}
+              >
+                <X className="h-6 w-6" />
+              </button>
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white text-center z-10">
+                <h3 className="text-lg font-semibold">{projectTitles[modalProject]?.title || `Проект ${modalProject}`}</h3>
+                <p className="text-sm text-gray-300">{modalIndex + 1} / {getProjectImageUrls(modalProject).length}</p>
+              </div>
+              <button
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors disabled:opacity-30"
+                onClick={e => { e.stopPropagation(); setModalIndex(i => Math.max(0, i - 1)); }}
+                disabled={modalIndex === 0}
+              >
+                <ChevronLeft className="h-8 w-8" />
+              </button>
+              <motion.img
+                key={modalIndex}
+                src={getProjectImageUrls(modalProject)[modalIndex]}
+                alt=""
+                className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={e => e.stopPropagation()}
+              />
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors disabled:opacity-30"
+                onClick={e => { e.stopPropagation(); const imgs = getProjectImageUrls(modalProject); setModalIndex(i => Math.min(imgs.length - 1, i + 1)); }}
+                disabled={modalIndex === getProjectImageUrls(modalProject).length - 1}
+              >
+                <ChevronRight className="h-8 w-8" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

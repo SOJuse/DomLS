@@ -35,20 +35,20 @@ const Calculator: React.FC = () => {
   const [material, setMaterial] = useState('стандарт');
   const [deadline, setDeadline] = useState('обычный');
   const [stage, setStage] = useState('все');
-  const [priceRange, setPriceRange] = useState<{min: number, max: number} | null>(null);
-
+  // Цены из прайс-листа «Комплексные работы»
   const basePrices = {
-    'черновой': 5000,
-    'косметический': 7000,
-    'капитальный': 10000,
-    'дизайнерский': 15000
+    'черновой': 4500,      // оценка (черновой < косметического)
+    'косметический': 6000, // от 6000 ₽/м²
+    'капитальный': 15000,  // от 15 000 ₽/м²
+    'дизайнерский': 25000  // от 25 000 ₽/м²
   };
 
+  // Доп. услуги: демонтаж от 3000 ₽/м² из прайса
   const extraPrices = {
     design: 1000,
     plumbing: 1500,
     appliances: 1200,
-    demolition: 800
+    demolition: 3000       // от 3000 ₽/м² — демонтаж с вывозом мусора
   };
 
   const materialPrices = {
@@ -77,10 +77,8 @@ const Calculator: React.FC = () => {
     const materialPrice = materialPrices[material as keyof typeof materialPrices];
     const deadlinePrice = deadlinePrices[deadline as keyof typeof deadlinePrices];
     const stagePrice = stagePrices[stage as keyof typeof stagePrices];
-    const minPrice = (basePrice + extrasSum + materialPrice + deadlinePrice + stagePrice) * parseInt(area);
-    const maxPrice = minPrice + 0.15 * minPrice;
-    setResult(minPrice);
-    setPriceRange({ min: minPrice, max: Math.round(maxPrice) });
+    const totalPrice = Math.round((basePrice + extrasSum + materialPrice + deadlinePrice + stagePrice) * parseInt(area));
+    setResult(totalPrice);
   };
 
   const handleExtraChange = (key: string) => {
@@ -279,7 +277,7 @@ const Calculator: React.FC = () => {
                       className="w-4 h-4 text-[#1e3a8a] focus:ring-[#1e3a8a] rounded"
                     />
                     <span className="text-gray-700">Демонтажные работы</span>
-                    <span className="text-[#1e3a8a] font-medium">+800₽/м²</span>
+                    <span className="text-[#1e3a8a] font-medium">+3000₽/м²</span>
                   </label>
                 </div>
               </div>
@@ -338,10 +336,10 @@ const Calculator: React.FC = () => {
                   Мгновенный расчет
                 </span>
               </button>
-              {priceRange && (
+              {result !== null && (
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#1e3a8a]">{priceRange.min.toLocaleString()}₽ — {priceRange.max.toLocaleString()}₽</div>
-                  <div className="text-gray-600 mb-4">Диапазон стоимости (±15%)</div>
+                  <div className="text-3xl font-bold text-[#1e3a8a]">от {result.toLocaleString('ru-RU')} ₽</div>
+                  <div className="text-gray-600 mb-4">Примерная стоимость</div>
                   {!showContactForm && !isSubmitted && (
                     <button
                       className="mt-4 bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors duration-300"

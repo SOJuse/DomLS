@@ -37,6 +37,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2 text-gray-400">
               <li><a href="#about" className="hover:text-white transition-colors">О нас</a></li>
               <li><a href="#portfolio" className="hover:text-white transition-colors">Портфолио</a></li>
+              <li><a href="#prices" className="hover:text-white transition-colors">Прайсы</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Отзывы</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Гарантии</a></li>
               <li><a href="#contact" className="hover:text-white transition-colors">Контакты</a></li>
@@ -58,17 +59,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-400 text-sm">
-              © 2024 Дом ЛС. Все права защищены.
-            </div>
-            <div className="text-gray-400 text-sm space-x-4">
-              <span>ИНН: 7701234567</span>
-              <span>ОГРН: 1127746123456</span>
-            </div>
-          </div>
-        </div>
       </div>
     </footer>
   );
