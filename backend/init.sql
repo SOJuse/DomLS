@@ -59,6 +59,7 @@ END;
 $$ language 'plpgsql';
 
 -- Создание триггера для автоматического обновления updated_at
+DROP TRIGGER IF EXISTS update_calculator_requests_updated_at ON calculator_requests;
 CREATE TRIGGER update_calculator_requests_updated_at 
     BEFORE UPDATE ON calculator_requests 
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
