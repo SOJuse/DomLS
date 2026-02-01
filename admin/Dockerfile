@@ -12,6 +12,10 @@ RUN npm ci
 # Копируем исходный код
 COPY . .
 
+# API URL для продакшена
+ARG REACT_APP_API_URL=http://localhost:3001
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 # Собираем приложение
 RUN npm run build
 

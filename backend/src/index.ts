@@ -29,9 +29,12 @@ app.use(helmet({
 }));
 
 // Настройка CORS
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',')
+  : ['http://localhost:3000', 'http://localhost:3002'];
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['http://localhost:3000', 'http://localhost:3002'] 
+    ? allowedOrigins 
     : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
