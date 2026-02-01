@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
   # PostgreSQL Database
   postgres:
+    platform: linux/amd64
     image: postgres:15-alpine
     container_name: domls_postgres
     environment:
@@ -24,6 +23,7 @@ services:
 
   # Backend API
   backend:
+    platform: linux/amd64
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -48,6 +48,7 @@ services:
 
   # Frontend
   frontend:
+    platform: linux/amd64
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -66,6 +67,7 @@ services:
 
   # Admin Panel (Nginx + React Admin)
   admin:
+    platform: linux/amd64
     build:
       context: ./admin
       dockerfile: Dockerfile

@@ -4,6 +4,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
+    platform: linux/amd64
     container_name: domls_postgres
     environment:
       POSTGRES_DB: domls_db
